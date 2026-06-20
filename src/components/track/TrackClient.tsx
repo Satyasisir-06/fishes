@@ -38,7 +38,7 @@ export default function TrackClient() {
     setOrdersList([]);
 
     const result = await getOrdersByPhone(phone);
-    if (result.success) {
+    if (result.success && result.orders) {
       if (result.orders.length === 1) {
         setOrder(result.orders[0]); // Auto select if only 1
       } else {

@@ -40,6 +40,6 @@ export async function getOrdersByPhone(phone: string) {
     return { success: false, error: "No recent orders found for this phone number." };
   }
 
-  return { success: true, orders };
+  return { success: true, orders: orders! };
 }
 
