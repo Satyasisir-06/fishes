@@ -74,6 +74,7 @@ export default function Navbar() {
                   <Link
                     key={item.name}
                     href={item.href}
+                    prefetch={true}
                     className={`px-5 py-2.5 rounded-xl text-sm font-medium tracking-wide transition-all duration-200 flex items-center gap-2 ${
                       active
                         ? "text-accent bg-accent/10 shadow-sm"
@@ -139,6 +140,7 @@ export default function Navbar() {
               <Link
                 key={item.name}
                 href={item.href}
+                prefetch={true}
                 className={`relative flex items-center justify-center gap-2 py-2.5 rounded-full transition-all duration-300 ease-out cursor-pointer ${
                   active
                     ? "nav-active-pill px-5 text-foreground"

@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
-import { ArrowRight, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface BannerData {
   id: string;
@@ -40,7 +40,6 @@ const fallbackBanners: BannerData[] = [
 export default function BannerCarousel() {
   const [banners, setBanners] = useState<BannerData[]>(fallbackBanners);
   const [currentIdx, setCurrentIdx] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -78,12 +77,12 @@ export default function BannerCarousel() {
   const next = useCallback(() => goTo(currentIdx + 1), [currentIdx, goTo]);
   const prev = useCallback(() => goTo(currentIdx - 1), [currentIdx, goTo]);
 
-  // Auto-rotation
+  // Auto-rotation - 3.5 seconds between banners
   useEffect(() => {
-    if (total <= 1 || isPaused) return;
-    const interval = setInterval(next, 5000);
+    if (total <= 1) return;
+    const interval = setInterval(next, 3500);
     return () => clearInterval(interval);
-  }, [total, isPaused, next]);
+  }, [total, next]);
 
   if (!loaded) {
     return (
@@ -207,14 +206,6 @@ export default function BannerCarousel() {
                 />
               ))}
             </div>
-            {/* Pause/Play */}
-            <button
-              onClick={() => setIsPaused(!isPaused)}
-              className="p-1.5 rounded-full text-muted hover:text-foreground transition-colors"
-              title={isPaused ? "Resume auto-play" : "Pause auto-play"}
-            >
-              {isPaused ? <Play className="w-3.5 h-3.5" /> : <Pause className="w-3.5 h-3.5" />}
-            </button>
           </div>
         )}
       </div>

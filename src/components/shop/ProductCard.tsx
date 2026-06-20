@@ -21,6 +21,7 @@ export default function ProductCard({ product }: { product: Product }) {
             src={product.image_url}
             alt={product.name}
             className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
           />
         ) : (
           <div className="flex items-center justify-center w-full h-full text-muted text-sm">
@@ -41,19 +42,19 @@ export default function ProductCard({ product }: { product: Product }) {
         )}
       </div>
 
-      {/* Content */}
-      <div className="p-4 flex flex-col flex-1">
-        <div className="text-xs font-medium text-accent uppercase tracking-wider mb-1">
-          {product.category}
-        </div>
-        <Link href={`/product/${product.id}`} className="text-lg font-bold text-foreground hover:text-accent transition-colors line-clamp-1 mb-2">
-          {product.name}
-        </Link>
+       {/* Content */}
+       <div className="p-4 flex flex-col flex-1">
+         <div className="text-xs font-serif font-medium text-accent uppercase tracking-wider mb-1">
+           {product.category}
+         </div>
+         <Link href={`/product/${product.id}`} className="text-lg font-serif font-bold text-foreground hover:text-accent transition-colors line-clamp-1 mb-2">
+           {product.name}
+         </Link>
         
-        <div className="mt-auto flex items-center justify-between pt-4">
-          <span className="text-xl font-bold text-foreground tracking-tight">
-            ₹{product.price.toLocaleString("en-IN")}
-          </span>
+         <div className="mt-auto flex items-center justify-between pt-4">
+           <span className="text-xl font-serif font-bold text-foreground tracking-tight">
+             ₹{product.price.toLocaleString("en-IN")}
+           </span>
           <AddToCartBtn product={product} />
         </div>
       </div>

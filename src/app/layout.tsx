@@ -1,18 +1,21 @@
 import type { Metadata, Viewport } from "next";
-import { Bodoni_Moda, Jost } from "next/font/google";
+import { Playfair_Display, Merriweather } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import { CartProvider } from "@/components/cart/CartContext";
 import CartDrawer from "@/components/cart/CartDrawer";
+import AnimatedBackground from "@/components/layout/AnimatedBackground";
 
-const bodoni = Bodoni_Moda({
-  variable: "--font-bodoni",
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
-const jost = Jost({
-  variable: "--font-jost",
+const merriweather = Merriweather({
+  variable: "--font-merriweather",
   subsets: ["latin"],
+  weight: ["300", "400", "700", "900"],
 });
 
 export const metadata: Metadata = {
@@ -38,8 +41,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${bodoni.variable} ${jost.variable} h-full antialiased`}>
+    <html lang="en" className={`${playfair.variable} ${merriweather.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col font-sans bg-primary text-foreground">
+        <AnimatedBackground />
         <CartProvider>
           <Navbar />
           <main className="flex-1 flex flex-col relative">{children}</main>

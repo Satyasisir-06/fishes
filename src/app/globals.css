@@ -9,8 +9,8 @@
   --color-foreground: #F8FAFC;
   --color-muted: #94a3b8;
   --color-danger: #ef4444;
-  --font-sans: var(--font-jost), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-bodoni), ui-serif, Georgia, serif;
+  --font-sans: var(--font-merriweather), ui-serif, Georgia, serif;
+  --font-serif: var(--font-playfair), ui-serif, Georgia, serif;
 }
 
 :root {
@@ -65,4 +65,29 @@ body {
     opacity: 1;
     transform: scale(1);
   }
+}
+
+/* ─── Floating Bubble Animation ─── */
+@keyframes bubble {
+  0% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0;
+  }
+  10% {
+    opacity: var(--bubble-opacity, 0.05);
+  }
+  50% {
+    transform: translateY(-50vh) translateX(15px) scale(1.15);
+  }
+  90% {
+    opacity: var(--bubble-opacity, 0.05);
+  }
+  100% {
+    transform: translateY(-110vh) translateX(-10px) scale(0.6);
+    opacity: 0;
+  }
+}
+
+.animate-bubble {
+  animation: bubble linear infinite;
 }

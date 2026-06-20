@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { getOrderStatus, getOrdersByPhone } from "@/lib/actions/track-order";
-import { Search, Package, Clock, CheckCircle2, AlertCircle, Phone } from "lucide-react";
+import { Search, Package, Clock, CheckCircle2, AlertCircle, Phone, X } from "lucide-react";
 
 export default function TrackClient() {
   const [searchType, setSearchType] = useState<"code" | "phone">("code");
@@ -67,20 +67,30 @@ export default function TrackClient() {
     }
   };
 
-  const renderOrderCard = (o: any) => {
+   const renderOrderCard = (o: any) => {
     const statusInfo = getStatusDisplay(o.status);
     const StatusIcon = statusInfo.icon;
     
     return (
       <div className="bg-surface rounded-3xl border border-surface overflow-hidden shadow-xl animate-in fade-in slide-in-from-bottom-4 duration-500">
-        <div className="p-6 border-b border-white/5 flex justify-between items-center">
-          <div>
+        <div className="p-6 border-b border-white/5 flex justify-between items-start">
+          <div className="flex-1">
             <h2 className="text-xl font-bold text-foreground mb-1">Order Details</h2>
             <div className="text-sm text-muted">Placed on {new Date(o.created_at).toLocaleDateString()}</div>
           </div>
-          <div className="text-right">
-            <div className="text-xs text-muted uppercase tracking-widest mb-1">Code</div>
-            <div className="text-xl font-black text-accent">{o.pickup_code}</div>
+          <div className="flex items-center gap-4">
+            <div className="text-right">
+              <div className="text-xs text-muted uppercase tracking-widest mb-1">Code</div>
+              <div className="text-xl font-black text-accent">{o.pickup_code}</div>
+            </div>
+            <button
+              onClick={() => setOrder(null)}
+              className="p-2 text-muted hover:text-foreground hover:bg-white/5 rounded-full transition-colors flex-shrink-0"
+              aria-label="Close order details"
+              title="Close"
+            >
+              <X className="w-5 h-5" />
+            </button>
           </div>
         </div>
         
@@ -204,7 +214,7 @@ export default function TrackClient() {
       {order && renderOrderCard(order)}
 
       {/* Multiple Orders Result */}
-      {ordersList.length > 0 && (
+      {!order && ordersList.length > 0 && (
         <div className="flex flex-col gap-4">
           <h3 className="text-lg font-bold text-foreground">Your Recent Orders</h3>
           {ordersList.map(o => (
@@ -212,7 +222,6 @@ export default function TrackClient() {
               key={o.pickup_code}
               onClick={() => {
                 setOrder(o);
-                setOrdersList([]);
               }}
               className="bg-surface p-4 rounded-2xl border border-white/5 hover:border-accent/50 text-left transition-colors flex items-center justify-between group"
             >

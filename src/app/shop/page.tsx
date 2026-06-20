@@ -1,10 +1,12 @@
+import { Suspense } from "react";
 import { createClient } from "@/lib/supabase/server";
 import ShopClient from "@/components/shop/ShopClient";
+import ProductGridSkeleton from "@/components/shop/ProductGridSkeleton";
 
-// Opt out of static rendering so we fetch fresh data
-export const dynamic = "force-dynamic";
+// Revalidate every 60 seconds (1 minute) for fresh data while enabling caching
+export const revalidate = 60;
 
-export default async function ShopPage() {
+async function ShopProducts() {
   const supabase = await createClient();
   
   const { data: products, error } = await supabase
@@ -17,15 +19,21 @@ export default async function ShopPage() {
     console.error("Error fetching products:", error);
   }
 
+  return <ShopClient initialProducts={products || []} />;
+}
+
+export default function ShopPage() {
   return (
     <div className="flex-1 bg-primary pt-20 pb-28">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8 pt-2">
-          <h1 className="text-4xl font-extrabold text-foreground mb-4">Our Collection</h1>
+          <h1 className="text-4xl font-serif font-extrabold text-foreground mb-4">Our Collection</h1>
           <p className="text-muted">Browse our finest selection of pet fish, premium aquariums, and quality accessories.</p>
         </div>
 
-        <ShopClient initialProducts={products || []} />
+        <Suspense fallback={<ProductGridSkeleton />}>
+          <ShopProducts />
+        </Suspense>
       </div>
     </div>
   );

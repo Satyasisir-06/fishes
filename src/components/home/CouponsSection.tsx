@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
-import { Tag, Percent, Copy, Check } from "lucide-react";
-import CouponCard from "./CouponCard";
+import { Tag } from "lucide-react";
+import CouponsCarousel from "./CouponsCarousel";
 
 interface CouponData {
   id: string;
@@ -49,11 +49,7 @@ export default async function CouponsSection() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {coupons.map((coupon) => (
-            <CouponCard key={coupon.id} coupon={coupon} />
-          ))}
-        </div>
+        <CouponsCarousel coupons={coupons} />
       </div>
     </section>
   );

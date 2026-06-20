@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import ProductCard from "@/components/shop/ProductCard";
-import { syncProductsFromBucket } from "@/lib/actions/sync-products";
 
 type Product = {
   id: string;
@@ -24,21 +23,10 @@ const CATEGORIES = [
 
 export default function ShopClient({ initialProducts }: { initialProducts: Product[] }) {
   const [activeCategory, setActiveCategory] = useState("all");
-  const [isSyncing, setIsSyncing] = useState(false);
 
   const filteredProducts = activeCategory === "all" 
     ? initialProducts 
     : initialProducts.filter(p => p.category === activeCategory);
-
-  const handleSync = async () => {
-    setIsSyncing(true);
-    const result = await syncProductsFromBucket();
-    alert(result.message || result.error);
-    if (result.success) {
-      window.location.reload();
-    }
-    setIsSyncing(false);
-  };
 
   return (
     <div className="flex flex-col md:flex-row gap-8">
@@ -61,18 +49,6 @@ export default function ShopClient({ initialProducts }: { initialProducts: Produ
                 {cat.label}
               </button>
             ))}
-          </div>
-          
-          {/* Admin Sync Helper */}
-          <div className="mt-8 p-4 bg-surface rounded-2xl border border-surface">
-            <p className="text-xs text-muted mb-3">Admin Helper: Did you upload new images to the bucket?</p>
-            <button
-              onClick={handleSync}
-              disabled={isSyncing}
-              className="w-full px-4 py-2 bg-primary text-accent text-sm font-bold rounded-lg hover:bg-primary/80 transition-colors border border-accent/20 disabled:opacity-50"
-            >
-              {isSyncing ? "Syncing..." : "Sync Images to Products"}
-            </button>
           </div>
         </div>
       </div>

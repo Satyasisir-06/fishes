@@ -137,7 +137,7 @@ export default function HeroSection() {
             </h1>
 
             {/* Subtitle */}
-            <p className="text-lg text-muted/90 max-w-xl mx-auto md:mx-0 text-balance mb-10 leading-relaxed">
+            <p className="text-lg font-serif text-muted/90 max-w-xl mx-auto md:mx-0 text-balance mb-10 leading-relaxed">
               Elevate your space with our curated selection of premium exotic fish,
               luxurious aquascapes, and expert-approved accessories.
             </p>

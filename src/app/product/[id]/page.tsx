@@ -48,14 +48,14 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
           {/* Product Info */}
           <div className="w-full md:w-1/2 flex flex-col">
             <div className="mb-2">
-              <span className="text-sm font-bold text-accent uppercase tracking-widest">{product.category}</span>
+              <span className="text-sm font-serif font-bold text-accent uppercase tracking-widest">{product.category}</span>
             </div>
             
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-foreground mb-4">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-extrabold text-foreground mb-4">
               {product.name}
             </h1>
             
-            <div className="text-3xl font-bold text-foreground mb-6 tracking-tight">
+            <div className="text-3xl font-serif font-bold text-foreground mb-6 tracking-tight">
               ₹{product.price.toLocaleString("en-IN")}
             </div>
 
