@@ -34,6 +34,28 @@ body {
   }
 }
 
+/* ─── Floating Bottom Pill Nav ─── */
+.bottom-nav-pill {
+  background: rgba(10, 15, 30, 0.85);
+  backdrop-filter: blur(24px) saturate(1.5);
+  -webkit-backdrop-filter: blur(24px) saturate(1.5);
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+    0 -2px 8px rgba(14, 165, 233, 0.06) inset;
+  padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
+}
+
+/* Active pill capsule behind the selected item */
+.nav-active-pill {
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 0 12px rgba(14, 165, 233, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+}
+
 @keyframes bannerFadeIn {
   from {
     opacity: 0;

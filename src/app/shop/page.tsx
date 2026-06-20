@@ -18,9 +18,9 @@ export default async function ShopPage() {
   }
 
   return (
-    <div className="flex-1 bg-primary pt-8 pb-20">
+    <div className="flex-1 bg-primary pt-20 pb-28">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
+        <div className="mb-8 pt-2">
           <h1 className="text-4xl font-extrabold text-foreground mb-4">Our Collection</h1>
           <p className="text-muted">Browse our finest selection of pet fish, premium aquariums, and quality accessories.</p>
         </div>

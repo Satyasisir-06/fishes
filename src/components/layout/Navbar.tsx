@@ -1,108 +1,169 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, ShoppingCart, Fish } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { Home, Store, Package, ShoppingCart, Fish } from "lucide-react";
 import { useCart } from "@/components/cart/CartContext";
 
+const NAV_ITEMS = [
+  { name: "Home", href: "/", icon: Home },
+  { name: "Shop", href: "/shop", icon: Store },
+  { name: "Cart", href: "#cart", icon: ShoppingCart, isCart: true },
+  { name: "Track", href: "/track", icon: Package },
+];
+
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const { cartCount, setIsCartOpen } = useCart();
 
-  if (pathname.startsWith('/admin')) {
+  if (pathname.startsWith("/admin")) {
     return null;
   }
 
-  const navLinks = [
-    { name: "Home", href: "/" },
-    { name: "Shop", href: "/shop" },
-    { name: "Track Order", href: "/track" },
-  ];
+  const isActive = (href: string) => {
+    if (href === "/") return pathname === "/";
+    return pathname.startsWith(href);
+  };
 
   return (
     <>
-      <nav className="fixed top-0 z-40 w-full bg-transparent border-b border-white/5 transition-all duration-300 backdrop-blur-sm">
-        <div className="absolute inset-0 bg-primary/40 backdrop-blur-md -z-10"></div>
+      {/* ─── Top Header: Logo only ─── */}
+      <nav
+        className="fixed top-0 z-40 w-full backdrop-blur-md border-b border-white/5"
+        aria-label="Top header"
+      >
+        <div className="absolute inset-0 bg-primary/60 -z-10" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
-            
-            {/* Logo */}
-            <div className="flex-shrink-0">
-              <Link href="/" className="flex items-center gap-3 group">
-                <Fish className="w-8 h-8 text-foreground group-hover:text-accent transition-colors duration-300" />
-                <span className="font-serif font-bold text-2xl tracking-widest text-foreground uppercase">Kicchu</span>
-              </Link>
+          <div className="flex items-center justify-between h-16 md:h-20">
+            {/* Logo — centered on mobile, left on desktop */}
+            <Link
+              href="/"
+              className="flex items-center gap-2.5 group mx-auto md:mx-0"
+            >
+              <Fish className="w-7 h-7 text-accent group-hover:text-accent-hover transition-colors duration-300" />
+              <span className="font-serif font-bold text-xl tracking-[0.2em] text-foreground uppercase">
+                Kicchu
+              </span>
+            </Link>
+
+            {/* Desktop Nav — center */}
+            <div className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
+              {NAV_ITEMS.map((item) => {
+                const Icon = item.icon;
+                const active = item.isCart ? false : isActive(item.href);
+
+                if (item.isCart) {
+                  return (
+                    <button
+                      key={item.name}
+                      onClick={() => setIsCartOpen(true)}
+                      className="relative px-5 py-2.5 rounded-xl text-sm font-medium tracking-wide transition-all duration-200 text-foreground/70 hover:text-foreground hover:bg-white/5 cursor-pointer flex items-center gap-2"
+                    >
+                      <Icon className="w-4 h-4" />
+                      {item.name}
+                      {cartCount > 0 && (
+                        <span className="absolute -top-1 -right-1 w-5 h-5 text-xs font-bold text-white bg-accent rounded-full flex items-center justify-center border-2 border-primary">
+                          {cartCount}
+                        </span>
+                      )}
+                    </button>
+                  );
+                }
+
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className={`px-5 py-2.5 rounded-xl text-sm font-medium tracking-wide transition-all duration-200 flex items-center gap-2 ${
+                      active
+                        ? "text-accent bg-accent/10 shadow-sm"
+                        : "text-foreground/70 hover:text-foreground hover:bg-white/5"
+                    }`}
+                  >
+                    <Icon className="w-4 h-4" />
+                    {item.name}
+                  </Link>
+                );
+              })}
             </div>
 
-            {/* Desktop Nav Removed for Mobile-First Design */}
-
-            {/* Actions (Cart & Mobile Menu Button) */}
-            <div className="flex items-center gap-4">
-              
-              <button 
+            {/* Desktop: Cart button */}
+            <div className="hidden md:flex items-center">
+              <button
                 onClick={() => setIsCartOpen(true)}
-                className="relative p-2 text-foreground/80 hover:text-accent transition-colors rounded-full hover:bg-white/5"
-                aria-label="Cart"
+                className="relative p-2 text-foreground/80 hover:text-accent transition-colors rounded-full hover:bg-white/5 cursor-pointer"
+                aria-label="Open cart"
               >
-                <ShoppingCart className="w-6 h-6" />
+                <ShoppingCart className="w-5 h-5" />
                 {cartCount > 0 && (
-                  <span className="absolute 0 right-0 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-accent rounded-full border-2 border-primary">
+                  <span className="absolute -top-0.5 -right-0.5 w-5 h-5 text-xs font-bold text-white bg-accent rounded-full flex items-center justify-center border-2 border-primary">
                     {cartCount}
                   </span>
                 )}
               </button>
-
-              <div className="flex">
-                <button
-                  onClick={() => setIsOpen(!isOpen)}
-                  className="inline-flex items-center justify-center p-2 rounded-full text-foreground/80 hover:text-accent hover:bg-white/5 focus:outline-none transition-colors"
-                  aria-expanded={isOpen}
-                >
-                  <span className="sr-only">Open main menu</span>
-                  {isOpen ? (
-                    <X className="block h-6 w-6" aria-hidden="true" />
-                  ) : (
-                    <Menu className="block h-6 w-6" aria-hidden="true" />
-                  )}
-                </button>
-              </div>
-
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Mobile Menu Drawer */}
-      <div 
-        className={`fixed inset-0 z-30 transform transition-transform duration-500 cubic-bezier(0.4, 0, 0.2, 1) ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+      {/* ─── Floating Bottom Pill Nav (Mobile Only) ─── */}
+      <div
+        className="md:hidden fixed bottom-5 left-4 right-4 z-50"
+        role="navigation"
+        aria-label="Main navigation"
       >
-        <div className="absolute inset-0 bg-primary/95 backdrop-blur-2xl"></div>
-        <div className="relative pt-24 pb-6 space-y-2 px-6 h-full flex flex-col z-40">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              href={link.href}
-              onClick={() => setIsOpen(false)}
-              className={`block px-6 py-5 rounded-2xl text-xl font-serif tracking-wide transition-all duration-300 ${
-                pathname === link.href
-                  ? "text-accent bg-white/5 shadow-lg shadow-black/20"
-                  : "text-foreground/80 hover:text-foreground hover:bg-white/5 hover:translate-x-2"
-              }`}
-            >
-              {link.name}
-            </Link>
-          ))}
-          
-          <div className="mt-auto pb-8 px-4 flex justify-center">
-             <div className="text-muted/60 text-sm flex flex-col items-center gap-3">
-                <Fish className="w-6 h-6 opacity-40" />
-                <span className="uppercase tracking-widest text-xs">Kicchu Premium Selection</span>
-             </div>
-          </div>
+        <div className="bottom-nav-pill flex items-center justify-around px-2 py-2 h-16">
+          {NAV_ITEMS.map((item) => {
+            const Icon = item.icon;
+            const active = item.isCart ? false : isActive(item.href);
+
+            if (item.isCart) {
+              return (
+                <button
+                  key={item.name}
+                  onClick={() => setIsCartOpen(true)}
+                  className="relative flex items-center justify-center gap-2 py-2.5 px-3 rounded-full transition-all duration-300 ease-out text-foreground/50 hover:text-foreground/80 cursor-pointer"
+                  aria-label={`${item.name}${cartCount > 0 ? ` (${cartCount} items)` : ""}`}
+                >
+                  <Icon className="w-5 h-5 flex-shrink-0" strokeWidth={2} />
+                  {cartCount > 0 && (
+                    <span className="absolute -top-1 -right-0.5 min-w-[18px] h-[18px] text-[10px] font-bold text-primary bg-accent rounded-full flex items-center justify-center px-1">
+                      {cartCount}
+                    </span>
+                  )}
+                </button>
+              );
+            }
+
+            return (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={`relative flex items-center justify-center gap-2 py-2.5 rounded-full transition-all duration-300 ease-out cursor-pointer ${
+                  active
+                    ? "nav-active-pill px-5 text-foreground"
+                    : "px-3 text-foreground/50 hover:text-foreground/80"
+                }`}
+                aria-current={active ? "page" : undefined}
+              >
+                <Icon
+                  className={`w-5 h-5 flex-shrink-0 transition-colors duration-300 ${
+                    active ? "text-accent" : ""
+                  }`}
+                  strokeWidth={active ? 2.5 : 2}
+                />
+                <span
+                  className={`text-sm font-semibold tracking-wide overflow-hidden transition-all duration-300 ease-out ${
+                    active
+                      ? "max-w-[80px] opacity-100"
+                      : "max-w-0 opacity-0"
+                  }`}
+                >
+                  {item.name}
+                </span>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </>
